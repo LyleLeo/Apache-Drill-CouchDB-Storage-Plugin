@@ -23,11 +23,6 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import com.fourspaces.couchdb.Database;
-import com.fourspaces.couchdb.Document;
-import com.fourspaces.couchdb.Session;
-import com.fourspaces.couchdb.ViewResults;
-
 import static org.apache.drill.common.expression.SchemaPath.STAR_COLUMN;
 
 public class CouchRecordReader extends AbstractRecordReader {

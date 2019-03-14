@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.fourspaces.couchdb.Session;
 import com.google.common.collect.ImmutableList;
 import org.apache.drill.exec.planner.logical.DynamicDrillTable;
 import org.apache.drill.exec.store.couch.CouchScanSpec;
