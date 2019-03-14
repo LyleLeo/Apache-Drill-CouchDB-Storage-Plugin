@@ -1,3 +1,7 @@
+
+#本项目代码目录：
+/contrib/storage-couch/src/main/java/org/apache/drill/exec/store/couch/
+
 # Apache Drill
 
 [![Build Status](https://travis-ci.org/apache/drill.svg?branch=master)](https://travis-ci.org/apache/drill)
