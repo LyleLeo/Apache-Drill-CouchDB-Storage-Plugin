@@ -22,6 +22,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.ektorp.CouchDbConnector;
+import org.ektorp.CouchDbInstance;
+import org.ektorp.ViewQuery;
+import org.ektorp.ViewResult;
+import org.ektorp.http.HttpClient;
+import org.ektorp.http.StdHttpClient;
+import org.ektorp.impl.StdCouchDbConnector;
+import org.ektorp.impl.StdCouchDbInstance;
 
 import static org.apache.drill.common.expression.SchemaPath.STAR_COLUMN;
 
@@ -137,40 +145,29 @@ public class CouchRecordReader extends AbstractRecordReader {
         //parseResult(content);
     }
 
-//    private void loadFile() {
-//        logger.debug("load local file {}", subScan.getScanSpec().getURI());
-//        String file = subScan.getScanSpec().getURI().substring("file://".length() - 1);
-//        String content = JsonConverter.stringFromFile(file);
-//        parseResult(content);
-//    }
-
-    private void parseResult(String content) {
-        String key = subScan.getStorageConfig().getResultKey();
-        JsonNode root = key.length() == 0 ? JsonConverter.parse(content) :
-                JsonConverter.parse(content, key);
-        if (root != null) {
-            logger.debug("response object count {}", root.size());
-            //jsonIt = root.elements();
-        }
-    }
-
     @Override
     public int next() {
         if(jsonIt == null){
-            logger.info(tableName);
-            String url="http://localhost:5984/"+tableName+"/_all_docs?include_docs=true";
-            SimpleHttp http = new SimpleHttp();
-            String result = http.get(url);
-            logger.debug("http '{}' response {} bytes", url, result.length());
-            JSONObject res = JSONObject.fromObject(result);
-            JSONArray rows = res.getJSONArray("rows");
-            Set<JSONObject> stringSet = new HashSet<>();
-            for(int i=0;i<rows.size();i++){
-                JSONObject job = rows.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                stringSet.add(JSONObject.fromObject(job.get("doc").toString()));
-                logger.debug(job.toString());
+            try{
+                HttpClient httpClient = new StdHttpClient.Builder()
+                        .url("http://localhost:5984/")
+                        .build();
+                CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+                CouchDbConnector connection = new StdCouchDbConnector("test",dbInstance);
+                ViewQuery q = new ViewQuery()
+                        .allDocs()
+                        .includeDocs(true);
+                Iterator<ViewResult.Row> resultIterator = connection.queryView(q).iterator();
+                Set<JSONObject> stringSet = new HashSet<>();
+
+                while (resultIterator.hasNext()){
+                    stringSet.add(JSONObject.fromObject(resultIterator.next().getDoc()));
+                }
+                jsonIt = stringSet.iterator();
+
+            }catch (Exception e){
+                System.out.println(e);
             }
-            jsonIt = stringSet.iterator();
         }
 
         logger.debug("CouchRecordReader next");
@@ -182,7 +179,7 @@ public class CouchRecordReader extends AbstractRecordReader {
         int docCount = 0;
         try {
             while (docCount < BaseValueVector.INITIAL_VALUE_ALLOCATION && jsonIt.hasNext()) {
-                JSONObject node = jsonIt.next();
+                JSONObject node = JSONObject.fromObject(jsonIt.next());
                 logger.debug(node.toString() + "jsonnode");
                 jsonReader.setSource(node.toString().getBytes(Charsets.UTF_8));
                 writer.setPosition(docCount);
