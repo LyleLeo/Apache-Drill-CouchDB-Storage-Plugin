@@ -1,0 +1,322 @@
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective settings
+[WARNING] Unrecognised tag: 'id' (position: START_TAG seen ...<profiles>\n      <id>... @195:11)  @ C:\apache-maven-3.5.3\bin\..\conf\settings.xml, line 195, column 11
+[WARNING] 
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective settings
+[WARNING] Unrecognised tag: 'id' (position: START_TAG seen ...<profiles>\n      <id>... @195:11)  @ C:\apache-maven-3.5.3\bin\..\conf\settings.xml, line 195, column 11
+[WARNING] 
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: windows
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.version: 10.0
+[INFO] os.detected.version.major: 10
+[INFO] os.detected.version.minor: 0
+[INFO] os.detected.classifier: windows-x86_64
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Apache Drill Root POM                                              [pom]
+[INFO] tools/Parent Pom                                                   [pom]
+[INFO] tools/freemarker codegen tooling                          [maven-plugin]
+[INFO] Drill Protocol                                                     [jar]
+[INFO] Common (Logical Plan, Base expressions)                            [jar]
+[INFO] Logical Plan, Base expressions                                     [jar]
+[INFO] exec/Parent Pom                                                    [pom]
+[INFO] exec/memory/Parent Pom                                             [pom]
+[INFO] exec/memory/base                                                   [jar]
+[INFO] exec/rpc                                                           [jar]
+[INFO] exec/Vectors                                                       [jar]
+[INFO] contrib/Parent Pom                                                 [pom]
+[INFO] contrib/data/Parent Pom                                            [pom]
+[INFO] contrib/data/tpch-sample-data                                      [jar]
+[INFO] exec/Java Execution Engine                                         [jar]
+[INFO] exec/JDBC Driver using dependencies                                [jar]
+[INFO] JDBC JAR with all dependencies                                     [jar]
+[INFO] Drill-on-YARN                                                      [jar]
+[INFO] contrib/kudu-storage-plugin                                        [jar]
+[INFO] contrib/opentsdb-storage-plugin                                    [jar]
+[INFO] contrib/mongo-storage-plugin                                       [jar]
+[INFO] contrib/hbase-storage-plugin                                       [jar]
+[INFO] contrib/jdbc-storage-plugin                                        [jar]
+[INFO] contrib/hive-storage-plugin/Parent Pom                             [pom]
+[INFO] contrib/hive-storage-plugin/hive-exec-shaded                       [jar]
+[INFO] contrib/hive-storage-plugin/core                                   [jar]
+[INFO] contrib/kafka-storage-plugin                                       [jar]
+[INFO] contrib/drill-udfs                                                 [jar]
+[INFO] contrib/format-syslog                                              [jar]
+[INFO] contrib/couch-storage-plugin                                       [jar]
+[INFO] Packaging and Distribution Assembly                                [pom]
+[INFO] contrib/mapr-format-plugin                                         [jar]
+[INFO] 
+[INFO] --------------------< org.apache.drill:drill-root >---------------------
+[INFO] Building Apache Drill Root POM 1.16.0-SNAPSHOT                    [1/32]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-root ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ----------------< org.apache.drill.tools:tools-parent >-----------------
+[INFO] Building tools/Parent Pom 1.16.0-SNAPSHOT                         [2/32]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ tools-parent ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -----------< org.apache.drill.tools:drill-fmpp-maven-plugin >-----------
+[INFO] Building tools/freemarker codegen tooling 1.16.0-SNAPSHOT         [3/32]
+[INFO] ----------------------------[ maven-plugin ]----------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-fmpp-maven-plugin ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------------< org.apache.drill:drill-protocol >-------------------
+[INFO] Building Drill Protocol 1.16.0-SNAPSHOT                           [4/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-protocol ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -------------------< org.apache.drill:drill-common >--------------------
+[INFO] Building Common (Logical Plan, Base expressions) 1.16.0-SNAPSHOT  [5/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-common ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -------------------< org.apache.drill:drill-logical >-------------------
+[INFO] Building Logical Plan, Base expressions 1.16.0-SNAPSHOT           [6/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-logical ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -----------------< org.apache.drill.exec:exec-parent >------------------
+[INFO] Building exec/Parent Pom 1.16.0-SNAPSHOT                          [7/32]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ exec-parent ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ---------------< org.apache.drill.memory:memory-parent >----------------
+[INFO] Building exec/memory/Parent Pom 1.16.0-SNAPSHOT                   [8/32]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ memory-parent ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -------------< org.apache.drill.memory:drill-memory-base >--------------
+[INFO] Building exec/memory/base 1.16.0-SNAPSHOT                         [9/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-memory-base ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------------< org.apache.drill.exec:drill-rpc >-------------------
+[INFO] Building exec/rpc 1.16.0-SNAPSHOT                                [10/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-rpc ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] --------------------< org.apache.drill.exec:vector >--------------------
+[INFO] Building exec/Vectors 1.16.0-SNAPSHOT                            [11/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ vector ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -----------< org.apache.drill.contrib:drill-contrib-parent >------------
+[INFO] Building contrib/Parent Pom 1.16.0-SNAPSHOT                      [12/32]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-contrib-parent ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------< org.apache.drill.contrib.data:drill-contrib-data-parent >-------
+[INFO] Building contrib/data/Parent Pom 1.16.0-SNAPSHOT                 [13/32]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-contrib-data-parent ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -----------< org.apache.drill.contrib.data:tpch-sample-data >-----------
+[INFO] Building contrib/data/tpch-sample-data 1.16.0-SNAPSHOT           [14/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ tpch-sample-data ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ---------------< org.apache.drill.exec:drill-java-exec >----------------
+[INFO] Building exec/Java Execution Engine 1.16.0-SNAPSHOT              [15/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-java-exec ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------------< org.apache.drill.exec:drill-jdbc >------------------
+[INFO] Building exec/JDBC Driver using dependencies 1.16.0-SNAPSHOT     [16/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-jdbc ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ----------------< org.apache.drill.exec:drill-jdbc-all >----------------
+[INFO] Building JDBC JAR with all dependencies 1.16.0-SNAPSHOT          [17/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-jdbc-all ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] --------------------< org.apache.drill:drill-yarn >---------------------
+[INFO] Building Drill-on-YARN 1.16.0-SNAPSHOT                           [18/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-yarn ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------< org.apache.drill.contrib:drill-kudu-storage >-------------
+[INFO] Building contrib/kudu-storage-plugin 1.16.0-SNAPSHOT             [19/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-kudu-storage ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ----------< org.apache.drill.contrib:drill-opentsdb-storage >-----------
+[INFO] Building contrib/opentsdb-storage-plugin 1.16.0-SNAPSHOT         [20/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-opentsdb-storage ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------< org.apache.drill.contrib:drill-mongo-storage >------------
+[INFO] Building contrib/mongo-storage-plugin 1.16.0-SNAPSHOT            [21/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-mongo-storage ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------< org.apache.drill.contrib:drill-storage-hbase >------------
+[INFO] Building contrib/hbase-storage-plugin 1.16.0-SNAPSHOT            [22/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The POM for org.glassfish:javax.el:jar:3.0.1-b06-SNAPSHOT is missing, no dependency information available
+[WARNING] The POM for org.glassfish:javax.el:jar:3.0.1-b07-SNAPSHOT is missing, no dependency information available
+[WARNING] The POM for org.glassfish:javax.el:jar:3.0.1-b08-SNAPSHOT is missing, no dependency information available
+[WARNING] The POM for org.glassfish:javax.el:jar:3.0.1-b11-SNAPSHOT is missing, no dependency information available
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-storage-hbase ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------< org.apache.drill.contrib:drill-jdbc-storage >-------------
+[INFO] Building contrib/jdbc-storage-plugin 1.16.0-SNAPSHOT             [23/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-jdbc-storage ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] --< org.apache.drill.contrib.storage-hive:drill-contrib-storage-hive-parent >--
+[INFO] Building contrib/hive-storage-plugin/Parent Pom 1.16.0-SNAPSHOT  [24/32]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-contrib-storage-hive-parent ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ----< org.apache.drill.contrib.storage-hive:drill-hive-exec-shaded >----
+[INFO] Building contrib/hive-storage-plugin/hive-exec-shaded 1.16.0-SNAPSHOT [25/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-hive-exec-shaded ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ---< org.apache.drill.contrib.storage-hive:drill-storage-hive-core >----
+[INFO] Building contrib/hive-storage-plugin/core 1.16.0-SNAPSHOT        [26/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-storage-hive-core ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------< org.apache.drill.contrib:drill-storage-kafka >------------
+[INFO] Building contrib/kafka-storage-plugin 1.16.0-SNAPSHOT            [27/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-storage-kafka ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ----------------< org.apache.drill.contrib:drill-udfs >-----------------
+[INFO] Building contrib/drill-udfs 1.16.0-SNAPSHOT                      [28/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-udfs ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------< org.apache.drill.contrib:drill-format-syslog >------------
+[INFO] Building contrib/format-syslog 1.16.0-SNAPSHOT                   [29/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-format-syslog ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] ------------< org.apache.drill.contrib:drill-couch-storage >------------
+[INFO] Building contrib/couch-storage-plugin 1.16.0-SNAPSHOT            [30/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-couch-storage ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -------------------< org.apache.drill:distribution >--------------------
+[INFO] Building Packaging and Distribution Assembly 1.16.0-SNAPSHOT     [31/32]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ distribution ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] 
+[INFO] -------------< org.apache.drill.contrib:drill-format-mapr >-------------
+[INFO] Building contrib/mapr-format-plugin 1.16.0-SNAPSHOT              [32/32]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ drill-format-mapr ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] Apache Drill Root POM 1.16.0-SNAPSHOT .............. SUCCESS [  0.679 s]
+[INFO] tools/Parent Pom ................................... SUCCESS [  0.024 s]
+[INFO] tools/freemarker codegen tooling ................... SUCCESS [  0.180 s]
+[INFO] Drill Protocol ..................................... SUCCESS [  0.023 s]
+[INFO] Common (Logical Plan, Base expressions) ............ SUCCESS [  0.097 s]
+[INFO] Logical Plan, Base expressions ..................... SUCCESS [  0.042 s]
+[INFO] exec/Parent Pom .................................... SUCCESS [  0.031 s]
+[INFO] exec/memory/Parent Pom ............................. SUCCESS [  0.031 s]
+[INFO] exec/memory/base ................................... SUCCESS [  0.028 s]
+[INFO] exec/rpc ........................................... SUCCESS [  0.113 s]
+[INFO] exec/Vectors ....................................... SUCCESS [  0.035 s]
+[INFO] contrib/Parent Pom ................................. SUCCESS [  0.015 s]
+[INFO] contrib/data/Parent Pom ............................ SUCCESS [  0.014 s]
+[INFO] contrib/data/tpch-sample-data ...................... SUCCESS [  0.396 s]
+[INFO] exec/Java Execution Engine ......................... SUCCESS [  0.466 s]
+[INFO] exec/JDBC Driver using dependencies ................ SUCCESS [  0.125 s]
+[INFO] JDBC JAR with all dependencies ..................... SUCCESS [  0.408 s]
+[INFO] Drill-on-YARN ...................................... SUCCESS [  0.108 s]
+[INFO] contrib/kudu-storage-plugin ........................ SUCCESS [  0.442 s]
+[INFO] contrib/opentsdb-storage-plugin .................... SUCCESS [  0.154 s]
+[INFO] contrib/mongo-storage-plugin ....................... SUCCESS [  0.142 s]
+[INFO] contrib/hbase-storage-plugin ....................... SUCCESS [  0.417 s]
+[INFO] contrib/jdbc-storage-plugin ........................ SUCCESS [  0.133 s]
+[INFO] contrib/hive-storage-plugin/Parent Pom ............. SUCCESS [  0.013 s]
+[INFO] contrib/hive-storage-plugin/hive-exec-shaded ....... SUCCESS [  0.102 s]
+[INFO] contrib/hive-storage-plugin/core ................... SUCCESS [  0.260 s]
+[INFO] contrib/kafka-storage-plugin ....................... SUCCESS [  0.129 s]
+[INFO] contrib/drill-udfs ................................. SUCCESS [  0.135 s]
+[INFO] contrib/format-syslog .............................. SUCCESS [  0.127 s]
+[INFO] contrib/couch-storage-plugin ....................... SUCCESS [  0.139 s]
+[INFO] Packaging and Distribution Assembly ................ SUCCESS [  0.312 s]
+[INFO] contrib/mapr-format-plugin 1.16.0-SNAPSHOT ......... SUCCESS [  0.240 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 6.041 s
+[INFO] Finished at: 2019-03-21T03:32:18+08:00
+[INFO] ------------------------------------------------------------------------

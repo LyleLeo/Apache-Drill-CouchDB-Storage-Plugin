@@ -1,6 +1,7 @@
 package org.apache.drill.exec.store.couch;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.*;
 
 import net.sf.json.JSONArray;
@@ -36,7 +37,7 @@ import static org.apache.drill.common.expression.SchemaPath.STAR_COLUMN;
 public class CouchRecordReader extends AbstractRecordReader {
     static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CouchRecordReader.class);
 
-
+    private CouchDbConnector connection;
     private boolean isBsonRecordReader = false;
     private String tableName;
     private VectorContainerWriter writer;
@@ -63,6 +64,17 @@ public class CouchRecordReader extends AbstractRecordReader {
         //buildFilters(subScanSpec.getFilter(), mergedFilters);
         logger.debug("BsonRecordReader is enabled? " + isBsonRecordReader);
         tableName = subScanSpec.TableName;
+        HttpClient httpClient = null;
+        try {
+            httpClient = new StdHttpClient.Builder()
+                    .url("http://localhost:5984/")
+                    .build();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+        connection = new StdCouchDbConnector(subScanSpec.getTableName(),dbInstance);
+
     }
 
     @Override
@@ -148,12 +160,6 @@ public class CouchRecordReader extends AbstractRecordReader {
     @Override
     public int next() {
         if(jsonIt == null){
-            try{
-                HttpClient httpClient = new StdHttpClient.Builder()
-                        .url("http://localhost:5984/")
-                        .build();
-                CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-                CouchDbConnector connection = new StdCouchDbConnector("test",dbInstance);
                 ViewQuery q = new ViewQuery()
                         .allDocs()
                         .includeDocs(true);
@@ -164,10 +170,6 @@ public class CouchRecordReader extends AbstractRecordReader {
                     stringSet.add(JSONObject.fromObject(resultIterator.next().getDoc()));
                 }
                 jsonIt = stringSet.iterator();
-
-            }catch (Exception e){
-                System.out.println(e);
-            }
         }
 
         logger.debug("CouchRecordReader next");
