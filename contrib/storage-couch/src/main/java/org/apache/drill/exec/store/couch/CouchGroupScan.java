@@ -139,6 +139,7 @@ public class CouchGroupScan extends AbstractGroupScan {
         return subScanSpec;
     }
 
+
     @Override
     public PhysicalOperator getNewWithChildren(List<PhysicalOperator> children)
             throws ExecutionSetupException {
