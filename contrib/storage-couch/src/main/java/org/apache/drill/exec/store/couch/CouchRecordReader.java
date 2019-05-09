@@ -32,8 +32,6 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 
-import static org.apache.drill.common.expression.SchemaPath.STAR_COLUMN;
-
 public class CouchRecordReader extends AbstractRecordReader {
     static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CouchRecordReader.class);
 
@@ -49,19 +47,12 @@ public class CouchRecordReader extends AbstractRecordReader {
     private JSONObject filters;
     private final CouchStoragePlugin plugin;
 
-
     public CouchRecordReader(FragmentContext context,List<SchemaPath> projectedColumns, CouchSubScan.CouchSubScanSpec subScanSpec, CouchStoragePlugin plugin) {
         fields = new JSONObject();
-        // exclude _id field, if not mentioned by user.
-        //fields.put(, Integer.valueOf(0));
         setColumns(projectedColumns);
         fragmentContext = context;
         this.plugin = plugin;
         filters = new JSONObject();
-        //Map<String, List<JSONObject>> mergedFilters = CouchUtils.mergeFilters(
-        //        subScanSpec.getMinFilters(), subScanSpec.getMaxFilters());
-//
-        //buildFilters(subScanSpec.getFilter(), mergedFilters);
         logger.debug("BsonRecordReader is enabled? " + isBsonRecordReader);
         tableName = subScanSpec.TableName;
         HttpClient httpClient = null;
@@ -74,7 +65,6 @@ public class CouchRecordReader extends AbstractRecordReader {
         }
         CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
         connection = new StdCouchDbConnector(subScanSpec.getTableName(),dbInstance);
-
     }
 
     @Override
