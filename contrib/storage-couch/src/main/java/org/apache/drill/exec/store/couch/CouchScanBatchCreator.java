@@ -30,6 +30,7 @@ public class CouchScanBatchCreator implements BatchCreator<CouchSubScan>{
         if ((columns = subScan.getColumns()) == null)
         {
             columns = GroupScan.ALL_COLUMNS;
+            logger.info(columns +"columns");
         }
         CouchSubScan.CouchSubScanSpec subscanspec = subScan.getSubScanSpec();
         readers.add(new CouchRecordReader(context,columns,subscanspec,subScan.getCouchStoragePlugin()));

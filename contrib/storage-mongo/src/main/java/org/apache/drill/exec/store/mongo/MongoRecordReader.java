@@ -171,9 +171,12 @@ public class MongoRecordReader extends AbstractRecordReader {
   @Override
   public int next() {
     if (cursor == null) {
+      long start_time = System.currentTimeMillis();
       logger.info("Filters Applied : " + filters);
       logger.info("Fields Selected :" + fields);
       cursor = collection.find(filters).projection(fields).batchSize(100).iterator();
+      long end_time = System.currentTimeMillis();
+      logger.info("took {} ms get from mongodb",end_time-start_time);
     }
 
     writer.allocate();
@@ -203,7 +206,7 @@ public class MongoRecordReader extends AbstractRecordReader {
       }
 
       writer.setValueCount(docCount);
-      logger.debug("Took {} ms to get {} records", watch.elapsed(TimeUnit.MILLISECONDS), docCount);
+      logger.info("Took {} ms to get {} records", watch.elapsed(TimeUnit.MILLISECONDS), docCount);
       return docCount;
     } catch (IOException e) {
       String msg = "Failure while reading document. - Parser was at record: " + (docCount + 1);

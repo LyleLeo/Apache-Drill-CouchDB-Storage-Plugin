@@ -41,6 +41,18 @@
             <artifactId>drill-java-exec</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.lightcouch/lightcouch -->
+        <dependency>
+            <groupId>org.lightcouch</groupId>
+            <artifactId>lightcouch</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.drill.exec</groupId>
+            <artifactId>drill-jdbc-all</artifactId>
+            <version>1.16.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

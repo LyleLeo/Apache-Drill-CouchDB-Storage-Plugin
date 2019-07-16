@@ -2,8 +2,13 @@ package org.apache.drill.exec.store.couch;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.drill.jdbc.Driver;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.drill.common.exceptions.ExecutionSetupException;
@@ -23,6 +28,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.apache.drill.shaded.guava.com.google.common.base.Stopwatch;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.ViewQuery;
@@ -31,6 +37,7 @@ import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
+import org.lightcouch.CouchDbClient;
 
 public class CouchRecordReader extends AbstractRecordReader {
     static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CouchRecordReader.class);
@@ -46,6 +53,9 @@ public class CouchRecordReader extends AbstractRecordReader {
     private final JSONObject fields;
     private JSONObject filters;
     private final CouchStoragePlugin plugin;
+    private Iterator<ViewResult.Row> rowIterator = null;
+
+
 
     public CouchRecordReader(FragmentContext context,List<SchemaPath> projectedColumns, CouchSubScan.CouchSubScanSpec subScanSpec, CouchStoragePlugin plugin) {
         fields = new JSONObject();
@@ -54,17 +64,9 @@ public class CouchRecordReader extends AbstractRecordReader {
         this.plugin = plugin;
         filters = new JSONObject();
         logger.debug("BsonRecordReader is enabled? " + isBsonRecordReader);
-        tableName = subScanSpec.TableName;
-        HttpClient httpClient = null;
-        try {
-            httpClient = new StdHttpClient.Builder()
-                    .url("http://localhost:5984/")
-                    .build();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-        connection = new StdCouchDbConnector(subScanSpec.getTableName(),dbInstance);
+        tableName = subScanSpec.getTableName();
+
+
     }
 
     @Override
@@ -119,61 +121,58 @@ public class CouchRecordReader extends AbstractRecordReader {
         //JsonReader(fragmentContext.getManagedBuffer(),
         //Lists.newArrayList(getColumns(), true, false, true);
             logger.debug(" Intialized JsonRecordReader. " + getColumns().toString());
-
-        //加参数以识别column
-        //loadCouch();
-    }
-
-    private void loadCouch() {
-        Map map = new HashMap();
-        String dataPost;
-        String url;
-        url="http://localhost:5984/hello/_all_docs?include_docs=true";
-
-
-        //Map<String,Object> args = subScan.getFullURL().get(url);
-        //filters = subScan.getScanSpec().getFilters();
-        SimpleHttp http = new SimpleHttp();
-        String result = http.get(url);
-        logger.debug("http '{}' response {} bytes", url, result.length());
-        JSONObject res = JSONObject.fromObject(result);
-        JSONArray rows = res.getJSONArray("rows");
-        for(int i=0;i<rows.size();i++){
-            JSONObject job = rows.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-            String doc = job.get("doc").toString();
-            logger.debug(job.toString());
-        }
-
-        //parseResult(content);
     }
 
     @Override
-    public int next() {
-        if(jsonIt == null){
-                ViewQuery q = new ViewQuery()
+    public int next(){
+        long couchdbcount = 0;
+        if(rowIterator == null){
+            HttpClient httpClient = null;
+            try {
+                httpClient = new StdHttpClient.Builder()
+                        .url("http://localhost:5984/")
+                        .build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+            connection = new StdCouchDbConnector(tableName,dbInstance);
+            long time_before = System.currentTimeMillis();
+            ViewQuery q = new ViewQuery()
                         .allDocs()
                         .includeDocs(true);
-                Iterator<ViewResult.Row> resultIterator = connection.queryView(q).iterator();
-                Set<JSONObject> stringSet = new HashSet<>();
+            rowIterator = connection.queryView(q).iterator();
+            long time_after = System.currentTimeMillis();
+            httpClient.shutdown();
+            logger.info("took {} ms to get {} records from couchdb", time_after-time_before, couchdbcount);
 
-                while (resultIterator.hasNext()){
-                    stringSet.add(JSONObject.fromObject(resultIterator.next().getDoc()));
-                }
-                jsonIt = stringSet.iterator();
         }
+        long memory_setting = 0;
+        //if(couchdbcount != 0){
+        //    memory_setting = couchdbcount*1500;
+        //    logger.info("couchdbcount = {}, memory_setting = {}",couchdbcount, memory_setting);
+        //    try{
+        //        execute_sql(st,"ALTER SYSTEM SET `planner.memory.max_query_memory_per_node` = " + memory_setting);
+        //    }catch (Exception e){
+        //        e.printStackTrace();
+        //    }
+        //}
+        logger.info("ALTER SYSTEM SET `planner.memory.max_query_memory_per_node` = " + memory_setting);
 
         logger.debug("CouchRecordReader next");
-        if (jsonIt == null || !jsonIt.hasNext()) {
+        if (rowIterator == null || !rowIterator.hasNext()) {
             return 0;
         }
         writer.allocate();
         writer.reset();
         int docCount = 0;
+        Stopwatch watch = Stopwatch.createStarted();
         try {
-            while (docCount < BaseValueVector.INITIAL_VALUE_ALLOCATION && jsonIt.hasNext()) {
-                JSONObject node = JSONObject.fromObject(jsonIt.next());
-                logger.debug(node.toString() + "jsonnode");
-                jsonReader.setSource(node.toString().getBytes(Charsets.UTF_8));
+            while (docCount < BaseValueVector.INITIAL_VALUE_ALLOCATION && rowIterator.hasNext()) {
+                JSONObject row = JSONObject.fromObject(rowIterator.next().getDoc());
+                logger.debug(row.toString() + "jsonnode");
+                jsonReader.setSource(row.toString().getBytes(Charsets.UTF_8));
                 writer.setPosition(docCount);
                 jsonReader.write(writer);
                 docCount ++;
@@ -181,13 +180,18 @@ public class CouchRecordReader extends AbstractRecordReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        logger.info("get {} records", docCount);
         writer.setValueCount(docCount);
+        logger.info("Took {} ms to get {} records", watch.elapsed(TimeUnit.MILLISECONDS), docCount);
         return docCount;
     }
 
     @Override
     public void close() {
         logger.debug("CouchRecordReader cleanup");
+    }
+    private static void execute_sql(Statement st, String sql) throws Exception{
+        st.executeQuery(sql);
     }
 
 }
