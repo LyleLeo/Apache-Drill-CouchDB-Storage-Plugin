@@ -1,14 +1,22 @@
 
 package org.apache.drill.exec.store.couch;
 
-import org.apache.drill.common.expression.*;
+import org.apache.drill.common.expression.CastExpression;
+import org.apache.drill.common.expression.ConvertExpression;
+import org.apache.drill.common.expression.FunctionCall;
+import org.apache.drill.common.expression.LogicalExpression;
+import org.apache.drill.common.expression.SchemaPath;
 import org.apache.drill.common.expression.ValueExpressions.BooleanExpression;
+import org.apache.drill.common.expression.ValueExpressions.DateExpression;
 import org.apache.drill.common.expression.ValueExpressions.DoubleExpression;
 import org.apache.drill.common.expression.ValueExpressions.FloatExpression;
 import org.apache.drill.common.expression.ValueExpressions.IntExpression;
 import org.apache.drill.common.expression.ValueExpressions.LongExpression;
 import org.apache.drill.common.expression.ValueExpressions.QuotedString;
+import org.apache.drill.common.expression.ValueExpressions.TimeExpression;
+import org.apache.drill.common.expression.ValueExpressions.VarDecimalExpression;
 import org.apache.drill.common.expression.visitors.AbstractExprVisitor;
+
 import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableMap;
 import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableSet;
 
@@ -123,14 +131,14 @@ public class CouchCompareFunctionProcessor extends
                     break;
                 case "TIME_EPOCH":
                 case "TIME_EPOCH_BE":
-                    if (valueArg instanceof ValueExpressions.TimeExpression) {
-                        this.value = ((ValueExpressions.TimeExpression) valueArg).getTime();
+                    if (valueArg instanceof TimeExpression) {
+                        this.value = ((TimeExpression) valueArg).getTime();
                     }
                     break;
                 case "DATE_EPOCH":
                 case "DATE_EPOCH_BE":
-                    if (valueArg instanceof ValueExpressions.DateExpression) {
-                        this.value = ((ValueExpressions.DateExpression) valueArg).getDate();
+                    if (valueArg instanceof DateExpression) {
+                        this.value = ((DateExpression) valueArg).getDate();
                     }
                     break;
                 case "BOOLEAN_BYTE":
@@ -198,8 +206,8 @@ public class CouchCompareFunctionProcessor extends
 
         // Mongo does not support decimals, therefore double value is used.
         // See list of supported types in BsonValueCodecProvider.
-        if (valueArg instanceof ValueExpressions.VarDecimalExpression) {
-            this.value = ((ValueExpressions.VarDecimalExpression) valueArg).getBigDecimal().doubleValue();
+        if (valueArg instanceof VarDecimalExpression) {
+            this.value = ((VarDecimalExpression) valueArg).getBigDecimal().doubleValue();
             this.path = path;
             return true;
         }
@@ -207,30 +215,16 @@ public class CouchCompareFunctionProcessor extends
         return false;
     }
 
-    static boolean match(String functionName) {
-        return functionName.equals("equal");
-    }
-
     private static final ImmutableSet<Class<? extends LogicalExpression>> VALUE_EXPRESSION_CLASSES;
     static {
         ImmutableSet.Builder<Class<? extends LogicalExpression>> builder = ImmutableSet
                 .builder();
         VALUE_EXPRESSION_CLASSES = builder.add(BooleanExpression.class)
-                .add(ValueExpressions.DateExpression.class).add(DoubleExpression.class)
+                .add(DateExpression.class).add(DoubleExpression.class)
                 .add(FloatExpression.class).add(IntExpression.class)
                 .add(LongExpression.class).add(QuotedString.class)
-                .add(ValueExpressions.TimeExpression.class).add(ValueExpressions.VarDecimalExpression.class).build();
+                .add(TimeExpression.class).add(VarDecimalExpression.class).build();
     }
-
-    //public static CouchCompareFunctionProcessor process(FunctionCall call) {
-    //    LogicalExpression nameArg = call.args.get(0);
-    //    LogicalExpression valueArg = call.args.get(1);
-    //    CouchCompareFunctionProcessor evaluator = new CouchCompareFunctionProcessor();
-//
-    //    evaluator.success = nameArg.accept(evaluator, valueArg);
-//
-    //    return evaluator;
-    //}
 
     private static final ImmutableMap<String, String> COMPARE_FUNCTIONS_TRANSPOSE_MAP;
     static {

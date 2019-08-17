@@ -8,9 +8,12 @@ import net.sf.json.JSONObject;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class CouchUtils {
+    static final Logger logger = LoggerFactory.getLogger(CouchRecordReader.class);
     public static JSONObject andFilterAtIndex(JSONObject leftFilter,
                                               JSONObject rightFilter) {
         JSONObject andQueryFilter = new JSONObject();
@@ -34,7 +37,7 @@ public class CouchUtils {
     public static Map<String, List<JSONObject>> mergeFilters(
             Map<String, Object> minFilters, Map<String, Object> maxFilters) {
         Map<String, List<JSONObject>> filters = Maps.newHashMap();
-
+        logger.info("what t fk????????????????");
         for (Entry<String, Object> entry : minFilters.entrySet()) {
             List<JSONObject> list = filters.get(entry.getKey());
             if (list == null) {

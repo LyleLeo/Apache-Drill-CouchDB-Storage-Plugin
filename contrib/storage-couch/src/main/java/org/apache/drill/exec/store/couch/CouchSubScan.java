@@ -73,13 +73,6 @@ public class CouchSubScan extends AbstractBase implements SubScan {
         return plugin;
     }
 
-    Map<String, Map<String,Object>> getURL() {
-        return scanSpec.getURL();
-    }
-
-    Map<String,Map<String,Object>> getFullURL() {
-        return getURL();
-    }
 
     CouchStoragePluginConfig getStorageConfig() {
         return config;
@@ -121,14 +114,10 @@ public class CouchSubScan extends AbstractBase implements SubScan {
         public CouchSubScanSpec(@JsonProperty("dbName") String dbName,
                                 @JsonProperty("TableName") String TableName,
                                 @JsonProperty("host") String host,
-                                @JsonProperty("minFilters") Map<String, Object> minFilters,
-                                @JsonProperty("maxFilters") Map<String, Object> maxFilters,
                                 @JsonProperty("filters") JSONObject filters) {
             this.dbName = dbName;
             this.TableName = TableName;
             this.host = host;
-            this.minFilters = minFilters;
-            this.maxFilters = maxFilters;
             this.filter = filters;
         }
 

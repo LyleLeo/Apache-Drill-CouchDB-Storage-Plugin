@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableList;
 
-
 public class CouchFilterBuilder extends
-        AbstractExprVisitor<CouchScanSpec, Void, RuntimeException> {
+        AbstractExprVisitor<CouchScanSpec, Void, RuntimeException>
+{
     static final Logger logger = LoggerFactory
             .getLogger(CouchFilterBuilder.class);
     final CouchGroupScan groupScan;
@@ -33,6 +33,7 @@ public class CouchFilterBuilder extends
 
     public CouchScanSpec parseTree() {
         CouchScanSpec parsedSpec = le.accept(this, null);
+        logger.info("what the fuck {}", parsedSpec.getFilters());
         if (parsedSpec != null) {
             parsedSpec = mergeScanSpecs("booleanAnd", this.groupScan.getScanSpec(),
                     parsedSpec);
@@ -55,11 +56,13 @@ public class CouchFilterBuilder extends
                 } else {
                     newFilter = rightScanSpec.getFilters();
                 }
+                logger.info("{},{}",leftScanSpec.getFilters(),rightScanSpec.getFilters());
                 break;
             case "booleanOr":
                 newFilter = CouchUtils.orFilterAtIndex(leftScanSpec.getFilters(),
                         rightScanSpec.getFilters());
         }
+        logger.info("couch filters {}", newFilter.toString());
         return new CouchScanSpec(groupScan.getScanSpec().getDbName(), groupScan
                 .getScanSpec().getTableName(), newFilter);
     }
@@ -103,8 +106,6 @@ public class CouchFilterBuilder extends
     @Override
     public CouchScanSpec visitFunctionCall(FunctionCall call, Void value)
             throws RuntimeException {
-        logger.info(call.getName() + "FunctionCall");
-        logger.info(call.args.toString() + "args");
         CouchScanSpec nodeScanSpec = null;
         String functionName = call.getName();
         ImmutableList<LogicalExpression> args = call.args;
@@ -152,6 +153,7 @@ public class CouchFilterBuilder extends
             IOException {
         // extract the field name
         String fieldName = field.getRootSegmentPath();
+        logger.info("fieldname: {}", fieldName);
         CouchCompareOP compareOp = null;
         switch (functionName) {
             case "equal":
@@ -188,14 +190,17 @@ public class CouchFilterBuilder extends
             JSONObject queryFilter = new JSONObject();
             if (compareOp == CouchCompareOP.IFNULL) {
                 queryFilter.put(fieldName,
-                        new JSONObject().put(CouchCompareOP.IFNULL,null));
+                        new JSONObject().put(CouchCompareOP.EQUAL.getCompareOp(),null));
             } else if (compareOp == CouchCompareOP.IFNOTNULL) {
                 queryFilter.put(fieldName,
-                        new JSONObject().put(CouchCompareOP.IFNOTNULL,null));
+                        new JSONObject().put(CouchCompareOP.NOT_EQUAL.getCompareOp(),null));
             } else {
-                queryFilter.put(fieldName, new JSONObject().put(compareOp.getCompareOp(),
-                        fieldValue));
+                JSONObject kv = new JSONObject();
+                kv.put(compareOp.getCompareOp(),fieldValue);
+                queryFilter.put(fieldName, kv);
+                logger.info("go to else");
             }
+            logger.info("filter builder {}, compareOp {}, filed value {}", queryFilter, compareOp.getCompareOp(), fieldValue);
             return new CouchScanSpec(groupScan.getScanSpec().getDbName(), groupScan
                     .getScanSpec().getTableName(), queryFilter);
         }

@@ -6,16 +6,17 @@ import java.util.Set;
 import org.apache.calcite.schema.SchemaPlus;
 import org.apache.drill.common.JSONOptions;
 import org.apache.drill.common.exceptions.ExecutionSetupException;
+import org.apache.drill.exec.ops.OptimizerRulesContext;
 import org.apache.drill.exec.physical.base.AbstractGroupScan;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.store.AbstractStoragePlugin;
 import org.apache.drill.exec.store.SchemaConfig;
 import org.apache.drill.exec.store.StoragePluginOptimizerRule;
 import org.apache.drill.exec.store.couch.schema.CouchSchemaFactory;
+import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableSet;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -63,8 +64,8 @@ public class CouchStoragePlugin extends AbstractStoragePlugin {
         logger.debug("getPhysicalScan {} {} {} {}", userName, selection, selection.getRoot(), spec);
         return new CouchGroupScan(userName, this, spec,null);
     }
-
-    public Set<StoragePluginOptimizerRule> getOptimizerRules() {
+    @Override
+    public Set<StoragePluginOptimizerRule> getPhysicalOptimizerRules(OptimizerRulesContext optimizerRulesContext) {
         return ImmutableSet.of(CouchPushDownFilterForScan.INSTANCE);
     }
 

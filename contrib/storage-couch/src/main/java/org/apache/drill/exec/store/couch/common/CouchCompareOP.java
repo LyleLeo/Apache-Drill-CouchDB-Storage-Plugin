@@ -1,3 +1,4 @@
+
 package org.apache.drill.exec.store.couch.common;
 
 public enum  CouchCompareOP {
@@ -6,6 +7,7 @@ public enum  CouchCompareOP {
             "$options"), PROJECT("$project"), COND("$cond"), IFNULL("$ifNull"), IFNOTNULL(
             "$ifNotNull"), SUM("$sum"), GROUP_BY("$group"), EXISTS("$exists");
     private String compareOp;
+
     CouchCompareOP(String compareOp) {
         this.compareOp = compareOp;
     }
